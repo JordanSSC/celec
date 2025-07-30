@@ -6,17 +6,24 @@ import Student from './components/Student'
 
 // PENDIENTE: Cree la interfaz
 import DataHour from './interface/DataHour'
+import { useEffect, useState } from 'react'
 
 function App() {
 
   let url = "https://raw.githubusercontent.com/aavendan/datos/refs/heads/main/CELEC/hidrologia_17122024.json"
   
   // PENDIENTE: Variable de estado y la función de modificación. 
-
+  const [data, setData] = useState<DataHour[]>([])
 
   // PENDIENTE: 
   // Realizar una petición asíncrona a la URL. La respuesta es un JSON. 
   // Al recibir la respuesta, actualice la variable de estado.
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(json => setData(json))
+      .catch(() => setData([]))
+  }, [])
 
   
 
@@ -28,7 +35,7 @@ function App() {
         <Grid size={{ xs: 12 }}>
 
           {/* PENDIENTE: Envíe sus datos (apellidos, nombres y paralelo) como props del componente */}
-          <Student></Student>
+          <Student lastName="Sanchez Cevallos" firstName="Jordan Stuart" parallel="01"/>
 
         </Grid>
         
@@ -36,7 +43,7 @@ function App() {
         <Grid size={{ xs: 12 }}>
 
           {/* PENDIENTE: Envíe la variable de estado como prop */}
-          <HydrologyTable data={ }></HydrologyTable>
+          <HydrologyTable data={ data}></HydrologyTable>
         
         </Grid>
         
