@@ -1,6 +1,6 @@
 import './App.css'
 
-import Grid from '@mui/material/Grid2' 
+import Grid from '@mui/material/Grid2'
 import HydrologyTable from './components/HydrologyTable'
 import Student from './components/Student'
 
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 function App() {
 
   let url = "https://raw.githubusercontent.com/aavendan/datos/refs/heads/main/CELEC/hidrologia_17122024.json"
-  
+
   // PENDIENTE: Variable de estado y la función de modificación. 
   const [data, setData] = useState<DataHour[]>([])
 
@@ -19,35 +19,41 @@ function App() {
   // Realizar una petición asíncrona a la URL. La respuesta es un JSON. 
   // Al recibir la respuesta, actualice la variable de estado.
   useEffect(() => {
-    fetch(url)
-      .then(res => res.json())
-      .then(json => setData(json))
-      .catch(() => setData([]))
+    const fetchData = async () => {
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        setData(json);
+      } catch {
+        setData([]);
+      }
+    };
+    fetchData();
   }, [])
 
-  
+
 
 
   return (
     <Grid container spacing={5}>
 
-        {/* Student */}
-        <Grid size={{ xs: 12 }}>
+      {/* Student */}
+      <Grid size={{ xs: 12 }}>
 
-          {/* PENDIENTE: Envíe sus datos (apellidos, nombres y paralelo) como props del componente */}
-          <Student lastName="Sanchez Cevallos" firstName="Jordan Stuart" parallel="01"/>
+        {/* PENDIENTE: Envíe sus datos (apellidos, nombres y paralelo) como props del componente */}
+        <Student apellidos="Sanchez Cevallos" nombres="Jordan Stuart" paralelo="01" />
 
-        </Grid>
-        
-        {/* HydrologyTable */}
-        <Grid size={{ xs: 12 }}>
+      </Grid>
 
-          {/* PENDIENTE: Envíe la variable de estado como prop */}
-          <HydrologyTable data={ data}></HydrologyTable>
-        
-        </Grid>
-        
-       
+      {/* HydrologyTable */}
+      <Grid size={{ xs: 12 }}>
+
+        {/* PENDIENTE: Envíe la variable de estado como prop */}
+        <HydrologyTable data={data}></HydrologyTable>
+
+      </Grid>
+
+
     </Grid>
   )
 }
